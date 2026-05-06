@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>view_complaints</title>
+</head>
+<body>
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>All Complaints</h2>
+
+{% for c in complaints %}
+    <div>
+        <h3>{{ c.title }}</h3>
+        <p>{{ c.description }}</p>
+        <p>Status: {{ c.status }}</p>
+    </div>
+{% endfor %}
+
+{% endblock %}
+</body>
+</html>
