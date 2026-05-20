@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Authority Register - CivicFix{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <h3 class="text-center mb-4">🏛️ Authority Register</h3>
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Authority Level</label>
+                            <select class="form-control" name="level" required>
+                                <option value="member">Member</option>
+                                <option value="chairman">Chairman</option>
+                                <option value="mayor">Mayor</option>
+                                <option value="dc">DC</option>
+                                <option value="mp">MP</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password1" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" name="password2" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Register as Authority</button>
+                    </form>
+
+                    <p class="text-center mt-3">
+                        Already have an account? <a href="{% url 'authority_login' %}">Login Here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

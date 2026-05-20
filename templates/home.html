@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Home - CivicFix{% endblock %}
+
+{% block content %}
+<div class="hero text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Welcome to Civic Issue Reporting System</h1>
+        <p class="lead mb-5">Report civic issues in your area and track their resolution.</p>
+    </div>
+</div>
+
+<div class="container my-5">
+    <h2 class="text-center mb-2 fw-bold text-primary">What You Can Report</h2>
+    <p class="text-center text-muted mb-5">Click any category below to submit a complaint</p>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <a href="{% url 'submit_complaint' %}?category=broken_roads" class="text-decoration-none text-dark">
+            <div class="card h-100 text-center p-4 border-0 shadow-sm">
+                <div class="mb-3 fs-1">🛣️</div>
+                <h5 class="fw-semibold">Broken Roads</h5>
+                <p class="text-muted small">Potholes, damaged roads, construction issues</p>
+                <span class="btn btn-outline-primary btn-sm mt-2">Report Now →</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="{% url 'submit_complaint' %}?category=street_lights" class="text-decoration-none text-dark">
+            <div class="card h-100 text-center p-4 border-0 shadow-sm">
+                <div class="mb-3 fs-1">💡</div>
+                <h5 class="fw-semibold">Street Lights</h5>
+                <p class="text-muted small">Non-working street lights and electrical issues</p>
+                <span class="btn btn-outline-primary btn-sm mt-2">Report Now →</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="{% url 'submit_complaint' %}?category=water_supply" class="text-decoration-none text-dark">
+            <div class="card h-100 text-center p-4 border-0 shadow-sm">
+                <div class="mb-3 fs-1">🚰</div>
+                <h5 class="fw-semibold">Water Supply</h5>
+                <p class="text-muted small">Water shortage, leakage, contamination</p>
+                <span class="btn btn-outline-primary btn-sm mt-2">Report Now →</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="{% url 'submit_complaint' %}?category=garbage_disposal" class="text-decoration-none text-dark">
+            <div class="card h-100 text-center p-4 border-0 shadow-sm">
+                <div class="mb-3 fs-1">🗑️</div>
+                <h5 class="fw-semibold">Garbage Disposal</h5>
+                <p class="text-muted small">Uncollected waste, overflowing bins</p>
+                <span class="btn btn-outline-primary btn-sm mt-2">Report Now →</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="{% url 'submit_complaint' %}?category=public_safety" class="text-decoration-none text-dark">
+            <div class="card h-100 text-center p-4 border-0 shadow-sm">
+                <div class="mb-3 fs-1">⚠️</div>
+                <h5 class="fw-semibold">Public Safety</h5>
+                <p class="text-muted small">Unsafe areas, accidents, hazards</p>
+                <span class="btn btn-outline-primary btn-sm mt-2">Report Now →</span>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="{% url 'submit_complaint' %}?category=other_problems" class="text-decoration-none text-dark">
+            <div class="card h-100 text-center p-4 border-0 shadow-sm">
+                <div class="mb-3 fs-1">📝</div>
+                <h5 class="fw-semibold">Other Problems</h5>
+                <p class="text-muted small">Any other civic issue you face in your community</p>
+                <span class="btn btn-outline-primary btn-sm mt-2">Report Now →</span>
+            </div>
+        </a>
+    </div>
+
+</div>
+
+    </div>
+</div>
+{% endblock %}

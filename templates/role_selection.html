@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Select Role - CivicFix{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">I am a</h2>
+                <p class="text-muted">Please select your role to continue</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <a href="{% if action == 'register' %}{% url 'register' %}{% else %}{% url 'login' %}{% endif %}?role=citizen"
+                       class="text-decoration-none">
+                        <div class="card h-100 text-center p-5">
+                            <h1 class="mb-3">👤</h1>
+                            <h4>Citizen</h4>
+                            <p class="text-muted">Report issues in your area</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% if action == 'register' %}{% url 'authority_register' %}{% else %}{% url 'authority_login' %}{% endif %}"
+                       class="text-decoration-none">
+                        <div class="card h-100 text-center p-5">
+                            <h1 class="mb-3">🏛️</h1>
+                            <h4>Authority</h4>
+                            <p class="text-muted">Government / Official User</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Citizen Dashboard - CivicFix{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <h2 class="mb-3">👤 Citizen Dashboard</h2>
+                    <p class="text-muted">Welcome back, <strong>{{ user.username }}</strong>!</p>
+
+                    {% if user.is_verified %}
+                        <div class="alert alert-success">✅ Your account is verified.</div>
+                        <a href="{% url 'submit_complaint' %}" class="btn btn-primary me-2">
+                            <i class="bi bi-plus-circle"></i> Submit New Complaint
+                        </a>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            ⏳ Your account is pending verification by admin. You cannot submit complaints yet.
+                        </div>
+                    {% endif %}
+
+                    <a href="{% url 'view_complaints' %}" class="btn btn-outline-primary">
+                        <i class="bi bi-list-ul"></i> View My Complaints
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

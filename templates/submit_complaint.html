@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block title %}Report a Problem - CivicFix{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <h3 class="fw-bold text-center mb-2">Fill This</h3>
+            <p class="text-center text-muted mb-4">
+                Report a civic problem in your area
+            </p>
+
+            {% if submitted %}
+            <div class="alert alert-success text-center p-4 rounded-4">
+                <div class="fs-1">✅</div>
+                <h5 class="fw-bold mt-2">Complaint Submitted!</h5>
+                <p class="mb-3">Authorities have been notified. Thank you for reporting.</p>
+                <a href="{% url 'home' %}" class="btn btn-success">← Back to Home</a>
+            </div>
+            {% else %}
+
+            <form method="POST" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                <input type="hidden" name="category"
+                       value="{{ request.GET.category|default:'other' }}">
+
+                <!-- SECTION 1: Add Photos/Videos and Text -->
+                <div class="card shadow-sm border-0 mb-4 rounded-4">
+                    <div class="card-header fw-bold fs-5 py-3 rounded-top-4"
+                         style="background: linear-gradient(135deg,#1e3a8a,#3b82f6); color:white;">
+                        📸 Add Photos / Videos and Text
+                        <span class="badge bg-danger ms-2">Required</span>
+                    </div>
+                    <div class="card-body p-4">
+
+                        <!-- Text description -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Describe the Problem <span class="text-danger">*</span>
+                            </label>
+                            <textarea name="description" class="form-control" rows="5"
+                                placeholder="Write about the problem in detail..."
+                                required></textarea>
+                        </div>
+
+                        <!-- Photo/Video upload -->
+                        <div>
+                            <label class="form-label fw-semibold">
+                                Attach Photo / Video
+                                <span class="text-muted fw-normal small">(optional)</span>
+                            </label>
+                            <div class="border rounded-3 p-4 text-center"
+                                 style="border: 2px dashed #3b82f6 !important;
+                                        background:#f8f9ff; cursor:pointer;"
+                                 onclick="document.getElementById('id_media').click()">
+                                <div class="fs-1 mb-1">📷</div>
+                                <p class="fw-semibold mb-1">Click to upload a photo or video</p>
+                                <p class="text-muted small mb-0">JPG, PNG, MP4 supported</p>
+                                <input type="file" name="media" id="id_media"
+                                       accept="image/*,video/*" class="d-none"
+                                       onchange="showFile(this)">
+                                <p id="file-name" class="text-primary small mt-2 mb-0"></p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SECTION 2: Location -->
+                <div class="card shadow-sm border-0 mb-4 rounded-4">
+                    <div class="card-header fw-bold fs-5 py-3 rounded-top-4"
+                         style="background: linear-gradient(135deg,#065f46,#10b981); color:white;">
+                        📍 Location
+                        <span class="badge bg-danger ms-2">Required</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <label class="form-label fw-semibold">
+                            Where is the problem located?
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select name="location" class="form-control form-select" required>
+                            <option value="">-- Select your area --</option>
+                            {% for loc in locations %}
+                                <option value="{{ loc.id }}">{{ loc }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="text-muted small mt-1">
+                            Select the area / union / ward of the problem.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold rounded-3">
+                        🚀 Submit Complaint
+                    </button>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="{% url 'home' %}" class="text-muted text-decoration-none">
+                        ← Back to Home
+                    </a>
+                </div>
+
+            </form>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<script>
+function showFile(input) {
+    if (input.files && input.files[0]) {
+        document.getElementById('file-name').textContent =
+            '✅ Selected: ' + input.files[0].name;
+    }
+}
+</script>
+{% endblock %}

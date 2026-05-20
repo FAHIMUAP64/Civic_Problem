@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Notifications - CivicFix{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    {% if overdue_complaints %}
+    <div class="alert alert-danger border-danger mb-4 p-4" style="animation: pulse-red 1.5s infinite; border-width: 2px !important;">
+        <h5 class="fw-bold mb-3">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            🔴 {{ overdue_complaints.count }} Overdue Complaint{{ overdue_complaints.count|pluralize }} — Deadline Passed!
+        </h5>
+        {% for c in overdue_complaints %}
+        <div class="bg-white rounded p-3 mb-2 border border-danger">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ c.title }}</strong>
+                    <span class="badge bg-danger ms-2">{{ c.get_category_display }}</span>
+                </div>
+                <div class="text-danger fw-bold small">
+                    <i class="bi bi-clock-fill"></i>
+                    Deadline was: {{ c.deadline }}
+                    ({{ c.days_remaining|add:"0" }} days overdue)
+                </div>
+            </div>
+            <div class="text-muted small mt-1">📍 {{ c.location }} | Status: {{ c.get_status_display }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold mb-0">🔔 Notifications</h3>
+        {% if user.is_staff or user.is_superuser %}
+            <a href="{% url 'authority_dashboard' %}" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
+        {% else %}
+            <a href="{% url 'citizen_dashboard' %}" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
+        {% endif %}
+    </div>
+
+    {% if notifications %}
+        {% for notif in notifications %}
+        <div class="card mb-3 shadow-sm border-0 {% if not notif.is_read %}border-start border-primary border-4{% endif %}">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <p class="mb-1">
+                        {% if not notif.is_read %}<span class="badge bg-primary me-2">New</span>{% endif %}
+                        {{ notif.message }}
+                    </p>
+                    <small class="text-muted text-nowrap ms-3">{{ notif.created_at|date:"d M Y, H:i" }}</small>
+                </div>
+                {% if notif.complaint.is_overdue %}
+                <div class="mt-2">
+                    <span class="badge bg-danger overdue-badge">
+                        <i class="bi bi-exclamation-triangle-fill"></i> OVERDUE — Deadline was {{ notif.complaint.deadline }}
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">No notifications yet.</div>
+    {% endif %}
+
+</div>
+
+<style>
+@keyframes pulse-red {
+    0%, 100% { background-color: #f8d7da; }
+    50%       { background-color: #f5c2c7; }
+}
+</style>
+{% endblock %}
