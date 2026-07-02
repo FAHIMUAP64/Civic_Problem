@@ -36,23 +36,23 @@
         <div class="ms-auto d-flex align-items-center gap-3">
 
             {% if user.is_authenticated %}
-                <a href="{% url 'notifications' %}" class="text-white text-decoration-none notif-bell">
+                <a href="{% url 'notifications' %}" class="text-white text-decoration-none notif-bell me-2">
                     <i class="bi bi-bell-fill fs-5"></i>
-                    {% with unread_notifs=user.notifications.all %}
-                        {% if unread_notifs %}
-                            <span class="notif-count">{{ unread_notifs|length }}</span>
-                        {% endif %}
-                    {% endwith %}
+                    {% if user.unread_notif_count > 0 %}
+                        <span class="notif-count">{{ user.unread_notif_count }}</span>
+                    {% endif %}
                 </a>
+
                 <span class="navbar-text text-white">Hello, {{ user.username }}</span>
                 <a href="{% url 'dashboard' %}" class="btn btn-outline-light btn-sm">Dashboard</a>
                 <a href="{% url 'logout' %}" class="btn btn-light btn-sm text-primary">Logout</a>
-{% else %}
-    {% if request.resolver_match.url_name == 'home' %}
-        <a href="{% url 'role_selection' %}?action=login" class="btn btn-outline-light me-2">Login</a>
-        <a href="{% url 'role_selection' %}?action=register" class="btn btn-light">Register</a>
-    {% endif %}
-{% endif %}
+            {% else %}
+                {% if request.resolver_match.url_name == 'home' %}
+                    <a href="{% url 'role_selection' %}?action=login" class="btn btn-outline-light me-2">Login</a>
+                    <a href="{% url 'role_selection' %}?action=register" class="btn btn-light">Register</a>
+                {% endif %}
+            {% endif %}
+
         </div>
     </div>
 </nav>

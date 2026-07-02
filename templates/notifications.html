@@ -11,20 +11,22 @@
             🔴 {{ overdue_complaints.count }} Overdue Complaint{{ overdue_complaints.count|pluralize }} — Deadline Passed!
         </h5>
         {% for c in overdue_complaints %}
-        <div class="bg-white rounded p-3 mb-2 border border-danger">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <strong>{{ c.title }}</strong>
-                    <span class="badge bg-danger ms-2">{{ c.get_category_display }}</span>
+        <a href="/complaints/{{ c.id }}/" class="text-decoration-none text-dark d-block mb-2 trigger-card">
+            <div class="bg-white rounded p-3 border border-danger shadow-sm hvr-slide">
+                <div class="d-flex justify-content-between align-items-center flex-wrap g-2">
+                    <div>
+                        <strong class="text-danger">{{ c.title }}</strong>
+                        <span class="badge bg-danger ms-2">{{ c.get_category_display }}</span>
+                    </div>
+                    <div class="text-danger fw-bold small">
+                        <i class="bi bi-clock-fill"></i>
+                        Deadline was: {{ c.deadline }}
+                        ({{ c.days_remaining|add:"0" }} days overdue)
+                    </div>
                 </div>
-                <div class="text-danger fw-bold small">
-                    <i class="bi bi-clock-fill"></i>
-                    Deadline was: {{ c.deadline }}
-                    ({{ c.days_remaining|add:"0" }} days overdue)
-                </div>
+                <div class="text-muted small mt-1">📍 {{ c.location }} | Status: <span class="badge bg-secondary">{{ c.get_status_display }}</span></div>
             </div>
-            <div class="text-muted small mt-1">📍 {{ c.location }} | Status: {{ c.get_status_display }}</div>
-        </div>
+        </a>
         {% endfor %}
     </div>
     {% endif %}
@@ -32,35 +34,39 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold mb-0">🔔 Notifications</h3>
         {% if user.is_staff or user.is_superuser %}
-            <a href="{% url 'authority_dashboard' %}" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
+            <a href="/dashboard/" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
         {% else %}
-            <a href="{% url 'citizen_dashboard' %}" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
+            <a href="/dashboard/" class="btn btn-outline-secondary btn-sm">← Dashboard</a>
         {% endif %}
     </div>
 
     {% if notifications %}
         {% for notif in notifications %}
-        <div class="card mb-3 shadow-sm border-0 {% if not notif.is_read %}border-start border-primary border-4{% endif %}">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <p class="mb-1">
-                        {% if not notif.is_read %}<span class="badge bg-primary me-2">New</span>{% endif %}
-                        {{ notif.message }}
-                    </p>
-                    <small class="text-muted text-nowrap ms-3">{{ notif.created_at|date:"d M Y, H:i" }}</small>
+        <a href="/complaints/{{ notif.complaint.id }}/" class="text-decoration-none text-dark d-block mb-3 trigger-card">
+            <div class="card shadow-sm border-0 hvr-slide {% if not notif.is_read %}border-start border-primary border-4 bg-light-blue{% endif %}">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <p class="mb-1 {% if not notif.is_read %}fw-semibold text-dark{% else %}text-muted{% endif %}">
+                            {% if not notif.is_read %}<span class="badge bg-primary me-2">New</span>{% endif %}
+                            {{ notif.message }}
+                        </p>
+                        <small class="text-muted text-nowrap ms-3">📅 {{ notif.created_at|date:"d M Y, H:i" }}</small>
+                    </div>
+                    {% if notif.complaint.is_overdue %}
+                    <div class="mt-2">
+                        <span class="badge bg-danger overdue-badge">
+                            <i class="bi bi-exclamation-triangle-fill"></i> OVERDUE — Deadline was {{ notif.complaint.deadline }}
+                        </span>
+                    </div>
+                    {% endif %}
                 </div>
-                {% if notif.complaint.is_overdue %}
-                <div class="mt-2">
-                    <span class="badge bg-danger overdue-badge">
-                        <i class="bi bi-exclamation-triangle-fill"></i> OVERDUE — Deadline was {{ notif.complaint.deadline }}
-                    </span>
-                </div>
-                {% endif %}
             </div>
-        </div>
+        </a>
         {% endfor %}
     {% else %}
-        <div class="alert alert-info">No notifications yet.</div>
+        <div class="alert alert-info border-0 shadow-sm rounded-3 p-4 text-center text-muted">
+            No notifications yet.
+        </div>
     {% endif %}
 
 </div>
@@ -69,6 +75,17 @@
 @keyframes pulse-red {
     0%, 100% { background-color: #f8d7da; }
     50%       { background-color: #f5c2c7; }
+}
+.bg-light-blue {
+    background-color: #f8faff !important;
+}
+.hvr-slide {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.trigger-card:hover .hvr-slide {
+    transform: translateX(4px);
+    box-shadow: 0 .4rem .8rem rgba(0,0,0,.09)!important;
+    cursor: pointer;
 }
 </style>
 {% endblock %}

@@ -25,7 +25,6 @@
                 <input type="hidden" name="category"
                        value="{{ request.GET.category|default:'other' }}">
 
-                <!-- SECTION 1: Add Photos/Videos and Text -->
                 <div class="card shadow-sm border-0 mb-4 rounded-4">
                     <div class="card-header fw-bold fs-5 py-3 rounded-top-4"
                          style="background: linear-gradient(135deg,#1e3a8a,#3b82f6); color:white;">
@@ -34,7 +33,6 @@
                     </div>
                     <div class="card-body p-4">
 
-                        <!-- Text description -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">
                                 Describe the Problem <span class="text-danger">*</span>
@@ -44,7 +42,6 @@
                                 required></textarea>
                         </div>
 
-                        <!-- Photo/Video upload -->
                         <div>
                             <label class="form-label fw-semibold">
                                 Attach Photo / Video
@@ -67,7 +64,6 @@
                     </div>
                 </div>
 
-                <!-- SECTION 2: Location -->
                 <div class="card shadow-sm border-0 mb-4 rounded-4">
                     <div class="card-header fw-bold fs-5 py-3 rounded-top-4"
                          style="background: linear-gradient(135deg,#065f46,#10b981); color:white;">
@@ -79,19 +75,39 @@
                             Where is the problem located?
                             <span class="text-danger">*</span>
                         </label>
+
                         <select name="location" class="form-control form-select" required>
                             <option value="">-- Select your area --</option>
                             {% for loc in locations %}
-                                <option value="{{ loc.id }}">{{ loc }}</option>
+                                <option value="{{ loc.id }}">{{ loc.name }}</option>
                             {% endfor %}
                         </select>
+
                         <div class="text-muted small mt-1">
                             Select the area / union / ward of the problem.
                         </div>
                     </div>
                 </div>
 
-                <!-- Submit -->
+                <div class="card shadow-sm border-0 mb-4 rounded-4">
+                    <div class="card-header fw-bold fs-5 py-3 rounded-top-4"
+                         style="background: linear-gradient(135deg,#7c2d12,#ea580c); color:white;">
+                        🎯 Urgency & Time Limit
+                        <span class="badge bg-light text-dark ms-2">Optional</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <label for="deadline" class="form-label fw-semibold">
+                            Requested Resolution Deadline
+                        </label>
+
+                        <input type="date" name="deadline" id="deadline" class="form-control form-control-lg">
+
+                        <div class="text-muted small mt-2">
+                            If this issue requires immediate attention (e.g. hazardous conditions), select an expected target completion date for the assigned authorities.
+                        </div>
+                    </div>
+                </div>
+
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold rounded-3">
                         🚀 Submit Complaint
@@ -117,5 +133,11 @@ function showFile(input) {
             '✅ Selected: ' + input.files[0].name;
     }
 }
+
+// Optional: Prevent users from picking a date in the past
+document.addEventListener("DOMContentLoaded", function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('deadline').setAttribute('min', today);
+});
 </script>
 {% endblock %}

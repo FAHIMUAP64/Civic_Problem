@@ -84,7 +84,6 @@ def authority_register(request):
         password1 = request.POST.get('password1', '')
         password2 = request.POST.get('password2', '')
         level     = request.POST.get('level', 'member')
-
         if not username or not email or not password1:
             messages.error(request, 'All fields are required.')
             return render(request, 'authority_register.html')
